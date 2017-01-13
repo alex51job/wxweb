@@ -1,0 +1,6 @@
+E:\githubs\wxweb\wxweb\bin\wxweb.dll.config
+E:\githubs\wxweb\wxweb\bin\wxweb.dll
+E:\githubs\wxweb\wxweb\bin\wxweb.pdb
+E:\githubs\wxweb\wxweb\obj\Debug\wxweb.csprojResolveAssemblyReference.cache
+E:\githubs\wxweb\wxweb\obj\Debug\wxweb.dll
+E:\githubs\wxweb\wxweb\obj\Debug\wxweb.pdb
