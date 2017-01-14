@@ -1,0 +1,48 @@
+Time:    2017/1/14 15:41:16
+Action:  queryWeather
+Message: {"results":[{"location":{"id":"WX4FBXXFKE4F","name":"北京","country":"CN","path":"北京,北京,中国","timezone":"Asia/Shanghai","timezone_offset":"+08:00"},"now":{"text":"晴","code":"0","temperature":"3"},"last_update":"2017-01-14T15:20:00+08:00"}]}
+-----------------------------------------------------------
+
+
+Time:    2017/1/14 15:41:24
+Action:  queryWeather
+Message: {"results":[{"location":{"id":"WX4FBXXFKE4F","name":"北京","country":"CN","path":"北京,北京,中国","timezone":"Asia/Shanghai","timezone_offset":"+08:00"},"now":{"text":"晴","code":"0","temperature":"3"},"last_update":"2017-01-14T15:20:00+08:00"}]}
+-----------------------------------------------------------
+
+
+Time:    2017/1/14 15:41:31
+Action:  queryWeather
+Message: {"results":[{"location":{"id":"WX4FBXXFKE4F","name":"北京","country":"CN","path":"北京,北京,中国","timezone":"Asia/Shanghai","timezone_offset":"+08:00"},"now":{"text":"晴","code":"0","temperature":"3"},"last_update":"2017-01-14T15:20:00+08:00"}]}
+-----------------------------------------------------------
+
+
+Time:    2017/1/14 15:41:41
+Action:  queryWeather
+Message: {"results":[{"location":{"id":"WX4FBXXFKE4F","name":"北京","country":"CN","path":"北京,北京,中国","timezone":"Asia/Shanghai","timezone_offset":"+08:00"},"now":{"text":"晴","code":"0","temperature":"3"},"last_update":"2017-01-14T15:20:00+08:00"}]}
+-----------------------------------------------------------
+
+
+Time:    2017/1/14 15:42:50
+Action:  queryWeather
+Message: {"results":[{"location":{"id":"WX4FBXXFKE4F","name":"北京","country":"CN","path":"北京,北京,中国","timezone":"Asia/Shanghai","timezone_offset":"+08:00"},"now":{"text":"晴","code":"0","temperature":"3"},"last_update":"2017-01-14T15:20:00+08:00"}]}
+-----------------------------------------------------------
+
+
+Time:    2017/1/14 15:43:35
+Action:  queryWeather
+Message: {"results":[{"location":{"id":"WX4FBXXFKE4F","name":"北京","country":"CN","path":"北京,北京,中国","timezone":"Asia/Shanghai","timezone_offset":"+08:00"},"now":{"text":"晴","code":"0","temperature":"3"},"last_update":"2017-01-14T15:20:00+08:00"}]}
+-----------------------------------------------------------
+
+
+Time:    2017/1/14 15:43:58
+Action:  queryWeather
+Message: {"results":[{"location":{"id":"WTW3SJ5ZBJUY","name":"上海","country":"CN","path":"上海,上海,中国","timezone":"Asia/Shanghai","timezone_offset":"+08:00"},"now":{"text":"多云","code":"4","temperature":"6"},"last_update":"2017-01-14T15:32:00+08:00"}]}
+-----------------------------------------------------------
+
+
+Time:    2017/1/14 15:44:19
+Action:  queryWeather
+Message: {"results":[{"location":{"id":"WTW3SJ5ZBJUY","name":"上海","country":"CN","path":"上海,上海,中国","timezone":"Asia/Shanghai","timezone_offset":"+08:00"},"now":{"text":"多云","code":"4","temperature":"6"},"last_update":"2017-01-14T15:32:00+08:00"}]}
+-----------------------------------------------------------
+
+
