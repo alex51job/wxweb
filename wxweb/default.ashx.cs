@@ -24,8 +24,17 @@ namespace wxweb
             //获取微信消息xml
             requestFromWX wx = readMessage(context);
 
-            //进行天气API查找，JSON化，返回content
-            string Msg = GetWeatherInfoByCity(wx.Content.Content ?? "beijing");
+            //分析词汇
+            string target = wx.Content.Content;
+            string Msg = "请输入城市名+天气查询某地天气，如:上海天气";
+            if (target.Contains("天气"))
+            {
+                string cityName = target.Replace("天气", "");
+                Utils.WriteTextLog("", cityName);
+                //进行天气API查找，JSON化，返回content,预读缓存
+                Msg = GetWeatherInfoByCity(cityName);
+            }
+
            
             //context.Response.Write(Msg);
             sendToWX(context, Msg, wx);
@@ -107,50 +116,72 @@ namespace wxweb
 
         public string GetWeatherInfoByCity(string city)
         {
+            results today = new results();
             String Msg = "";
-            try
+            //尝试从缓存中读取
+            if (QueryWeatherFromCache(city, out today))
             {
-                //加签名
-                HMACSHA1 hmacsha1 = new HMACSHA1();
-                hmacsha1.Key = Encoding.UTF8.GetBytes(Utils.GetConfig("WeatherKey"));
-                string querystring = "ts=" + Utils.GetTimeStamp() + "&ttl=30&uid=" + Utils.GetConfig("WeatherUID");
-                byte[] dataBuffer = Encoding.UTF8.GetBytes(querystring);
-                byte[] hashBytes = hmacsha1.ComputeHash(dataBuffer);
-                string sig = Convert.ToBase64String(hashBytes);
-
-                //声明一个HttpWebRequest请求  
-                string urlAPI = "https://api.thinkpage.cn/v3/weather/now.json?location=" + city + "&" + querystring + "&sig=" + sig;
-                var requestAPI = (HttpWebRequest)WebRequest.Create(urlAPI);
-                requestAPI.Method = "GET";
-                requestAPI.ContentType = "text/html;charset=UTF-8";
-                requestAPI.Timeout = 90000;
-                requestAPI.Headers.Set("Pragma", "no-cache");
-
-                //获取weather的response，格式化对象
-                var response = (HttpWebResponse)requestAPI.GetResponse();
-                var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
-                JavaScriptSerializer js = new JavaScriptSerializer();
-                results today = js.Deserialize<weather>(responseString).results[0];
-
-               
-                ////回复content内容
-                if (today == null)
-                {
-                    Msg = "查询过快，请稍后再试！";
-                }
-                else
-                {
-                    Msg = string.Format("您好，现在{0}的天气为{1}，温度为{2}℃", today.location.name, today.now.text, today.now.temperature);
-                }
-
+                Msg = string.Format("您好，现在{0}的天气为{1}，温度为{2}℃", today.location.name, today.now.text, today.now.temperature);
             }
-            catch (Exception)
+            else
             {
+                try
+                {
+                    //加签名
+                    HMACSHA1 hmacsha1 = new HMACSHA1();
+                    hmacsha1.Key = Encoding.UTF8.GetBytes(Utils.GetConfig("WeatherKey"));
+                    string querystring = "ts=" + Utils.GetTimeStamp() + "&ttl=30&uid=" + Utils.GetConfig("WeatherUID");
+                    byte[] dataBuffer = Encoding.UTF8.GetBytes(querystring);
+                    byte[] hashBytes = hmacsha1.ComputeHash(dataBuffer);
+                    string sig = Convert.ToBase64String(hashBytes);
 
-                Msg = "请您使用正确的中文城市名称哦，暂时不支持外国城市~";
+                    //声明一个HttpWebRequest请求  
+                    string urlAPI = "https://api.thinkpage.cn/v3/weather/now.json?location=" + city + "&" + querystring + "&sig=" + sig;
+                    var requestAPI = (HttpWebRequest)WebRequest.Create(urlAPI);
+                    requestAPI.Method = "GET";
+                    requestAPI.ContentType = "text/html;charset=UTF-8";
+                    requestAPI.Timeout = 90000;
+                    requestAPI.Headers.Set("Pragma", "no-cache");
+
+                    //获取weather的response，格式化对象
+                    var response = (HttpWebResponse)requestAPI.GetResponse();
+                    var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                    JavaScriptSerializer js = new JavaScriptSerializer();
+                    today = js.Deserialize<weather>(responseString).results[0];
+
+
+                    ////回复content内容
+                    if (today == null)
+                    {
+                        Msg = "请您使用正确的中文城市名称哦，暂时不支持外国城市~";
+                    }
+                    else
+                    {
+                        //存入缓存中
+                        CacheHelper.SetCache("Cache_Weather_" + today.location.name, today, new TimeSpan(1, 0, 0));
+                        Msg = string.Format("您好，现在{0}的天气为{1}，温度为{2}℃", today.location.name, today.now.text, today.now.temperature);
+                    }
+
+                }
+                catch (Exception)
+                {
+
+                    Msg = "查询次数过多，请稍后再试！";
+                }
             }
-           
             return Msg;
+        }
+
+        public bool QueryWeatherFromCache(string city, out results today)
+        {
+            string prefix = "Cache_Weather_";
+            if (CacheHelper.GetCache(prefix + city) != null)
+            {
+                today = (results)CacheHelper.GetCache(prefix + city);
+                return true;
+            }
+            today = null;
+            return false;
         }
     }
 }
